@@ -10,31 +10,25 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
-use App\Models\Message;
 
-class SendMessage implements ShouldBroadcast
+class UserOffline implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $sender;
-    public $receiver;
-    public $message;
+    public $user;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($sender, $receiver, $message)
+    public function __construct(User $user)
     {
-        $this->sender = $sender;
-        $this->receiver = $receiver;
-        $this->message = $message;
+        $this->user = $user;
     }
 
     public function broadcastOn()
     {
-        // Broadcasting channel for the receiver
-        return new Channel('user.' . $this->receiver->id);
+        return new Channel('users');
+    }
+
+    public function broadcastAs()
+    {
+        return 'user.offline';
     }
 }
