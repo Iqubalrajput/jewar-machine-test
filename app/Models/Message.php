@@ -11,10 +11,15 @@ class Message extends Model
 
     protected $fillable = ['user_id','receiver_id','message','image','voice'];
 
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 
-    // public function user(){
-    //     return $this->belongsTo(User::class);
-    // }
+    public function getVoiceAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
     public function sender()
     {
         return $this->belongsTo(User::class, 'user_id');

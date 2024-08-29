@@ -81,7 +81,7 @@ class ChatController extends Controller
                 'status' => 'success',
                 'data' => [
                     'messages' => $messages,
-                    'authUser' => [
+                    'sernder' => [
                         'id' => $authUser->id,
                         'name' => $authUser->name,
                         'online_status' => $authUser->online_status,

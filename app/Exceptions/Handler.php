@@ -36,7 +36,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $exception)
     {
-        // Check if the exception is an UnauthorizedHttpException or JWTException
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+            return response()->json([
+                'error' => 'Unauthorized. Please provide a valid token.'
+            ], 401);
+        }
+
         if ($exception instanceof UnauthorizedHttpException) {
             return response()->json([
                 'error' => 'Unauthorized. Invalid or missing token.'
@@ -51,6 +56,8 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $exception);
     }
+
+    
     public function register()
     {
         $this->reportable(function (Throwable $e) {
